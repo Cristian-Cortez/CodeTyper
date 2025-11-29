@@ -1,30 +1,18 @@
-import {useState, useEffect} from 'react'
-import TypingGameComponent from './components/TypingGameComponent'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
+import Login from './pages/Login'
 
-
+// this app structure uses pages
 function App() {
-  const [apiStatus, setAPIStatus] = useState()
-  const [text, setText] = useState()
-  async function load() {
-    const result = await fetch("http://localhost:3000/random-word")
-      .then(r => r.json());
-
-    setText(`${result.word} - ${result.definition} Ex. ${result.example}`);
-  }
-  useEffect(() => {
-    load();
-  }, []);
-  
-
-  
   return (
-    <div>
-    <h1>Word Typer</h1>
-    <TypingGameComponent text={text}/>
-    <button onClick={load}>Reset</button>
-    </div>
+    <Router>
+      <Routes>
+        {/* the home page is where the user will select the category and difficulty */}
+        <Route path="/" element={<Login />} /> 
+        <Route path="/home" element={<Home />} /> 
+      </Routes>
+    </Router>
   )
-   
 }
 
-export default App;
+export default App
