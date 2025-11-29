@@ -55,6 +55,61 @@ app.get("/api/random-snippet", async (req, res) => {
   }
 });
 
+app.get("/random-word", async (req, res) => {
+  try {
+      const letters = "abcdefghijklmnopqrstuvwxyz";
+
+      async function fetchValidWord() {
+        let ct = 0
+        while (true) {
+            ct++
+            const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+    
+            // Fetch MANY words for randomness
+            const wordRes = await fetch(
+                `https://api.datamuse.com/words?sp=${randomLetter}*&max=500`
+            );
+            const wordData = await wordRes.json();
+            if (!wordData.length) continue;
+    
+            const randomEntry = wordData[Math.floor(Math.random() * wordData.length)];
+            const word = randomEntry.word;
+    
+            // Fetch dictionary data
+            const defRes = await fetch(
+                `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+            );
+            const defData = await defRes.json();
+            if (defData.title === "No Definitions Found") continue;
+    
+            const meaning = defData[0].meanings?.[0];
+            if (!meaning) continue;
+    
+            const definitionObj = meaning.definitions?.[0];
+            if (!definitionObj) continue;
+    
+            const definition = definitionObj.definition;
+            const example = definitionObj.example || null;
+    
+            if (!definition) continue;
+            if(!example) continue;
+            console.log(ct);
+            return { word, definition, example };
+        }
+    }    
+    
+
+      const result = await fetchValidWord();
+      console.log(result)
+      res.json(result);
+
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 
 app.listen(app.get('port'), () => {
     console.log('App is running at http://localhost:%d in %s mode', app.get('port'), app.get('env'));

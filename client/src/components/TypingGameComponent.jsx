@@ -13,7 +13,7 @@ const TypingGameComponent = ({text}) => {
 
   // Capture and display!
   return (
-    <h1
+    <h2
       onKeyDown={e => {
         e.preventDefault();
         const key = e.key;
@@ -45,7 +45,7 @@ const TypingGameComponent = ({text}) => {
           </span>
         );
       })}
-    </h1>
+    </h2>
   );
 };
 export default TypingGameComponent;

@@ -6,30 +6,20 @@ function App() {
   const [apiStatus, setAPIStatus] = useState()
   const [text, setText] = useState()
   async function load() {
-    const result = await fetch("http://localhost:3000/api/random-snippet")
+    const result = await fetch("http://localhost:3000/random-word")
       .then(r => r.json());
 
-    setText(result.snippet);
+    setText(`${result.word} - ${result.definition} Ex. ${result.example}`);
   }
   useEffect(() => {
     load();
   }, []);
   
 
-  useEffect(() => {
-    fetch('http://localhost:3000/up')
-    .then(res => res.json())
-    .then(result => {
-      console.log(result.status)
-      setAPIStatus(result)
-  })
-  }, [])
-
   
   return (
     <div>
-    <h1>To get started, begin editing SRC/App.js</h1>
-    {apiStatus ? <h2>Testing app end point: <div style={{color: apiStatus.status === 'up' ? 'green':'red'}}>{apiStatus.status}</div></h2>:null }
+    <h1>Word Typer</h1>
     <TypingGameComponent text={text}/>
     <button onClick={load}>Reset</button>
     </div>
