@@ -1,5 +1,7 @@
-import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 
 export default function Navbar() {
     const style = {
@@ -15,6 +17,7 @@ export default function Navbar() {
                 </Typography>
                 <Button color="inherit" component={Link} to="/home">Home</Button>
                 <Button color="inherit" component={Link} to="/">Login</Button>
+                <IconButton color="inherit" component={Link} to="/profile"><AccountCircleIcon /></IconButton>
             </Toolbar>
         </AppBar>
     );
