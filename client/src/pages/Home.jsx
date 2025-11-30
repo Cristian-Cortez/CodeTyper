@@ -8,10 +8,11 @@ function Home() {
   let initialLoad = false
   
   async function load() {
+    setText('')
     const result = await fetch("http://localhost:3000/random-word")
       .then(r => r.json());
 
-    setText(`${result.word} - ${result.definition} \nEx. ${result.example}`);
+    setText(`${result.word} - ${result.definition} Ex. ${result.example}`);
   }
 
   useEffect(() => {
@@ -27,7 +28,7 @@ function Home() {
     <div>
       <Navbar/>
       <h1 style={{marginTop: '3%'}}>Click and start typing</h1>
-      <TypingGameComponent text={text}/>
+      {text? <TypingGameComponent text={text}/> : <h2 style={{color: '#1a1a1a'}}>Loading...</h2>}
       <button onClick={load}>Reset</button>
     </div>
   )
