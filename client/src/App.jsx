@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import CreateAccount from './pages/CreateAccount'
 
 // this app structure uses pages
 function App() {
@@ -10,6 +11,7 @@ function App() {
         {/* the home page is where the user will select the category and difficulty */}
         <Route path="/" element={<Login />} /> 
         <Route path="/home" element={<Home />} /> 
+        <Route path="/create-account" element={<CreateAccount />} /> 
       </Routes>
     </Router>
   )

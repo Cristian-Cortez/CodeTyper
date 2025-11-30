@@ -11,7 +11,7 @@ function Home() {
     const result = await fetch("http://localhost:3000/random-word")
       .then(r => r.json());
 
-    setText(`${result.word} - ${result.definition} Ex. ${result.example}`);
+    setText(`${result.word} - ${result.definition} \nEx. ${result.example}`);
   }
 
   useEffect(() => {
@@ -26,7 +26,7 @@ function Home() {
   return (
     <div>
       <Navbar/>
-      <h1>Click and start typing</h1>
+      <h1 style={{marginTop: '3%'}}>Click and start typing</h1>
       <TypingGameComponent text={text}/>
       <button onClick={load}>Reset</button>
     </div>
