@@ -33,7 +33,11 @@ const TypingGameComponent = ({ text }) => {
       return;
     }
     if (key === "Tab") {
-      insertTyping("    ");
+      console.log('tab');
+      insertTyping(" ");
+      insertTyping(" ");
+      insertTyping(" ");
+      insertTyping(" ");
       return;
     }
     if (key.length === 1) {
@@ -52,14 +56,14 @@ const TypingGameComponent = ({ text }) => {
   };
 
   return (
-    <div style={{ fontFamily: "monospace" }}>
+    <div style={{ fontFamily: "monospace"}}>
       <pre
         onKeyDown={(e) => {
           handleKey(e.key);
           e.preventDefault();
         }}
         tabIndex={0}
-        style={{ outline: 'none', cursor: "text", marginLeft: '35%'}}
+        style={{ outline: 'none', cursor: "text", marginLeft: '35%', whiteSpace: "pre-wrap", tabSize: 4}}
       >
         {chars.split('').map((char, index) => {
           let state = charsState[index];
