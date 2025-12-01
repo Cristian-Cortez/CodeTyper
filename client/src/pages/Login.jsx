@@ -43,7 +43,7 @@ export default function Login(){
                 <TextField sx = {textFieldStyle} required label="Password" onChange={event => setPassword(event.target.value)}/>
                 <button onClick={login}> Log in </button>
                 <h3>Don't have an account?
-                <Button sx={{color: 'purple', fontFamily: 'monospace'}} component={Link} to="/create-account">Sign up</Button>
+                <Button sx={{color: '#646cff', fontFamily: 'monospace'}} component={Link} to="/create-account">Sign up</Button>
                 </h3>
             </div>
         </div>

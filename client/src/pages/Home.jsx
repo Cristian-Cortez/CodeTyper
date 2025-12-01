@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 import TypingGameComponent from '../components/TypingGameComponent'
 import Navbar from '../components/Navbar'
+import {TextField, MenuItem} from '@mui/material'
 
 
 function Home() {
@@ -8,6 +9,40 @@ function Home() {
   const [lang, setLang] = useState("javascript");
   let initialLoad = false
   
+  // styling for textField
+  const textFieldStyle = {
+    '& .MuiInputBase-input': {
+      color: 'white',            // text color inside field
+      backgroundColor: '#27292c', // match dark background
+    },
+    '& .MuiInputLabel-root': {
+      color: 'white',            // label color
+    },
+    '& .MuiInputLabel-asterisk': {
+      color: 'white',            // required asterisk color
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'rgba(255,255,255,0.5)', // border
+      },
+      '&:hover fieldset': {
+        borderColor: 'white',    // border on hover
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'white',    // border on focus
+      },
+    },
+    '& .MuiSelect-icon': {
+      color: 'white',             // dropdown arrow
+    },
+    '& .MuiMenu-paper': {
+      backgroundColor: '#27292c', // dropdown background
+      color: 'white',             // dropdown text
+    },
+    '& .MuiMenuItem-root': {
+      color: 'white',             // menu item text
+    }
+  }
 
   async function load(newLang) {
     setText('')
@@ -29,37 +64,33 @@ function Home() {
   return (
     <div>
       <Navbar/>
-      <h1 style={{marginTop: '3%'}}>Click and start typing</h1>
+      <h1 style={{marginTop: '3%', fontSize: '3.2em'}}>Click and start typing</h1>
 
       {text? <TypingGameComponent text={text}/> : <h2>Loading...</h2>}
-      <button onClick={() => load(lang)}>Reset</button>
-      <div style={{ marginTop: "20px" }}>
-        <select
-          value={lang}
-          onChange={(e) => {
-            const newLang = e.target.value;
-            setLang(newLang);
-            load(newLang); // reload snippet in new language
-          }}
-          style={{
-            padding: "8px",
-            fontSize: "16px",
-            marginBottom: "20px",
-            cursor: "pointer"
-          }}
-        >
-          <option value="javascript">JavaScript</option>
-          <option value="python">Python</option>
-          <option value="java">Java</option>
-          <option value="c++">C++</option>
-          <option value="c#">C#</option>
-          <option value="go">Go</option>
-          <option value="rust">Rust</option>
-          <option value="typescript">TypeScript</option>
-          <option value="swift">Swift</option>
-          <option value="ruby">Ruby</option>
-          <option value="php">PHP</option>
-        </select>
+
+      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', alignItems: 'center', marginTop: '1rem'}}>
+      <div
+        style={{
+          display: 'flex',
+          gap: '1rem',
+          alignItems: 'center',
+          padding: '8px 16px',
+          borderRadius: '8px',
+        }}
+      >
+        <TextField sx = {textFieldStyle} select value={lang} label='Language' onChange={event => setLang(event.target.value)}>
+          <MenuItem key='javascript' value='javascript'> Javascript </MenuItem>
+          <MenuItem key='python' value='python'> Python </MenuItem>
+          <MenuItem key='java' value='java'> Java </MenuItem>
+          <MenuItem key='c++' value='c++'> C++ </MenuItem>
+          <MenuItem key='go' value='go'> Go </MenuItem>
+          <MenuItem key='rust' value='rust'> Rust </MenuItem>
+          <MenuItem key='typescript' value='typescript'> Typescript </MenuItem>
+          <MenuItem key='ruby' value='ruby'> Ruby </MenuItem>
+          <MenuItem key='swift' value='swift'> Swift </MenuItem>
+        </TextField>
+        <button onClick={() => load(lang)}>Reset</button>
+        </div>
       </div>
     </div>
   )

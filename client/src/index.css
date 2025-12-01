@@ -95,3 +95,16 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.codeBox{
+  outline: none;
+  cursor: text;
+  white-space: pre-wrap;
+  tab-size: 4;
+  border: 1px solid #d1d1d1;
+  padding: 15px;
+}
+
+.codeBox:focus {
+  border-color: #9095f0;
+}

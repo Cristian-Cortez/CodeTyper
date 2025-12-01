@@ -64,7 +64,8 @@ const TypingGameComponent = ({ text }) => {
             e.preventDefault();
           }}
           tabIndex={0}
-          style={{ outline: 'none', cursor: "text", whiteSpace: "pre-wrap", tabSize: 4, border: "1px solid #d1d1d1", padding: '15px'}}
+          className = 'codeBox'
+          
         >
           {chars.split('').map((char, index) => {
             let state = charsState[index];
