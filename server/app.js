@@ -31,8 +31,10 @@ app.get('/up', (req, res) => {
 // documentation: https://api.stackexchange.com/docs/questions
 app.get("/api/random-snippet", async (req, res) => {
   try {
+    const lang = req.query.lang || "javascript";
+
     const url =
-      "https://api.stackexchange.com/2.3/questions?order=desc&sort=votes&tagged=javascript&site=stackoverflow&filter=withbody";
+      `https://api.stackexchange.com/2.3/questions?order=desc&sort=votes&tagged=${lang}&site=stackoverflow&filter=withbody`;
 
     const data = await fetch(url).then(r => r.json());
 
@@ -45,7 +47,6 @@ app.get("/api/random-snippet", async (req, res) => {
       codeBlocks.forEach(block => {
         let snippet = he.decode(block.textContent); // <-- decode HTML entities
 
-        // optional: fix weird spacing/extra indentation
         snippet = snippet.replace(/\t/g, "    "); // convert tabs to spaces
         snippet = snippet.replace(/\r\n/g, "\n"); // normalize line endings
         

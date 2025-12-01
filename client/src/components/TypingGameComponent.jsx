@@ -57,38 +57,40 @@ const TypingGameComponent = ({ text }) => {
 
   return (
     <div style={{ fontFamily: "monospace"}}>
-      <pre
-        onKeyDown={(e) => {
-          handleKey(e.key);
-          e.preventDefault();
-        }}
-        tabIndex={0}
-        style={{ outline: 'none', cursor: "text", marginLeft: '35%', whiteSpace: "pre-wrap", tabSize: 4}}
-      >
-        {chars.split('').map((char, index) => {
-          let state = charsState[index];
-          let color =
-            state === CharStateType.Incomplete
-              ? 'black'
-              : state === CharStateType.Correct
-              ? 'green'
-              : 'red';
+      <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <pre
+          onKeyDown={(e) => {
+            handleKey(e.key);
+            e.preventDefault();
+          }}
+          tabIndex={0}
+          style={{ outline: 'none', cursor: "text", whiteSpace: "pre-wrap", tabSize: 4, border: "1px solid #d1d1d1", padding: '15px'}}
+        >
+          {chars.split('').map((char, index) => {
+            let state = charsState[index];
+            let color =
+              state === CharStateType.Incomplete
+                ? '#dfe0e8'
+                : state === CharStateType.Correct
+                ? 'green'
+                : 'red';
 
-          const isNext = index === currIndex + 1;
+            const isNext = index === currIndex + 1;
 
-          return (
-            <span
-              key={char + index}
-              style={{
-                color,
-                textDecoration: isNext ? "underline" : "none",
-              }}
-            >
-              {char}
-            </span>
-          );
-        })}
-      </pre>
+            return (
+              <span
+                key={char + index}
+                style={{
+                  color,
+                  textDecoration: isNext ? "underline" : "none",
+                }}
+              >
+                {char}
+              </span>
+            );
+          })}
+        </pre>
+      </div>
 
       {/* Stats Section */}
       <div style={{ marginTop: "10px", fontSize: "18px", color: '#1a1a1a', marginLeft: '7%'}}>

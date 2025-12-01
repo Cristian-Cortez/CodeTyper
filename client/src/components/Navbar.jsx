@@ -5,15 +5,16 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 export default function Navbar() {
     const style = {
-        backgroundColor: '#1a1a1a', 
-        fontFamily: 'monospace'
+        backgroundColor: '#27292c', 
+        fontFamily: 'monospace',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)' 
     }
 
     return (
         <AppBar sx = {style} position="static" elevation={0}>
             <Toolbar sx = {style}>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontFamily: 'monospace', fontWeight: 'bold'}}>
-                Word Typer
+                Code Typer
                 </Typography>
                 <Button color="inherit" component={Link} to="/home">Home</Button>
                 <Button color="inherit" component={Link} to="/">Login</Button>
