@@ -28,6 +28,14 @@ const TypingGameComponent = ({ text }) => {
       deleteTyping(false);
       return;
     }
+    if (key === "Enter") {
+      insertTyping("\n");
+      return;
+    }
+    if (key === "Tab") {
+      insertTyping("    ");
+      return;
+    }
     if (key.length === 1) {
       insertTyping(key);
     }
@@ -45,13 +53,13 @@ const TypingGameComponent = ({ text }) => {
 
   return (
     <div style={{ fontFamily: "monospace" }}>
-      <h2
+      <pre
         onKeyDown={(e) => {
           handleKey(e.key);
           e.preventDefault();
         }}
         tabIndex={0}
-        style={{ outline: 'none', cursor: "text" }}
+        style={{ outline: 'none', cursor: "text", marginLeft: '35%'}}
       >
         {chars.split('').map((char, index) => {
           let state = charsState[index];
@@ -69,14 +77,14 @@ const TypingGameComponent = ({ text }) => {
               key={char + index}
               style={{
                 color,
-                //textDecoration: isNext ? "underline" : "none",
+                textDecoration: isNext ? "underline" : "none",
               }}
             >
               {char}
             </span>
           );
         })}
-      </h2>
+      </pre>
 
       {/* Stats Section */}
       <div style={{ marginTop: "10px", fontSize: "18px", color: '#1a1a1a', marginLeft: '7%'}}>

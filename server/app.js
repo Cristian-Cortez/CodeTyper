@@ -3,6 +3,8 @@ import cors from 'cors'
 import 'dotenv/config'
 import fetch from "node-fetch";
 import { JSDOM } from "jsdom";
+import he from "he"; 
+
 
 
 import { query } from './db/postgres.js';
@@ -41,7 +43,13 @@ app.get("/api/random-snippet", async (req, res) => {
       const codeBlocks = dom.window.document.querySelectorAll("pre code");
 
       codeBlocks.forEach(block => {
-        snippets.push(block.textContent);
+        let snippet = he.decode(block.textContent); // <-- decode HTML entities
+
+        // optional: fix weird spacing/extra indentation
+        snippet = snippet.replace(/\t/g, "    "); // convert tabs to spaces
+        snippet = snippet.replace(/\r\n/g, "\n"); // normalize line endings
+        
+        snippets.push(snippet);
       });
     });
 

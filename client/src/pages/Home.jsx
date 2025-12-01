@@ -7,12 +7,20 @@ function Home() {
   const [text, setText] = useState()
   let initialLoad = false
   
-  async function load() {
+  /*async function load() {
     setText('')
     const result = await fetch("http://localhost:3000/random-word")
       .then(r => r.json());
 
     setText(`${result.word} - ${result.definition} Ex. ${result.example}`);
+  }*/
+
+  async function load() {
+    setText('')
+    const result = await fetch("http://localhost:3000/api/random-snippet")
+      .then(r => r.json());
+
+    setText(`${result.snippet}`);
   }
 
   useEffect(() => {
