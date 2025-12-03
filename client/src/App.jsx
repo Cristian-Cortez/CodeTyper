@@ -3,6 +3,8 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import CreateAccount from './pages/CreateAccount'
 import Profile from './pages/Profile'
+import Leaderboard from './pages/Leaderboard'
+import Admin from './pages/Admin'
 
 // this app structure uses pages
 function App() {
@@ -14,6 +16,8 @@ function App() {
         <Route path="/home" element={<Home />} /> 
         <Route path="/create-account" element={<CreateAccount />} /> 
         <Route path="/profile" element={<Profile />} /> 
+        <Route path="/leaderboard" element={<Leaderboard />} /> 
+        <Route path="/admin" element={<Admin />} /> 
       </Routes>
     </Router>
   )

@@ -38,7 +38,7 @@ app.get("/up", (req, res) => {
 app.get("/api/random-snippet", async (req, res) => {
   try {
     const lang = req.query.lang || "javascript";
-
+    //Questions are actually more reliable than answers as answers are often 80% comments
     const url = `https://api.stackexchange.com/2.3/questions?order=desc&sort=votes&tagged=${lang}&site=stackoverflow&filter=withbody`;
 
     const data = await fetch(url).then((r) => r.json());
@@ -133,7 +133,7 @@ app.post("/api/users", async (req, res) => {
       `insert into users
         (first_name, last_name, username, password_hash, salt, favorite_word)
        values ($1, $2, $3, $4, $5, $6)
-       returning id, first_name, last_name, username, favorite_word, best_wpm`,
+       returning id, first_name, last_name, username, favorite_word, best_wpm, isadmin`,
       [first_name, last_name, username, password_hash, salt, favorite_word || null],
     );
 
@@ -163,6 +163,7 @@ app.post("/api/login", async (req, res) => {
     }
 
     const user = result.rows[0];
+    console.log(user);
     const computedHash = hashPassword(password, user.salt);
 
     if (computedHash !== user.password_hash) {
@@ -177,6 +178,7 @@ app.post("/api/login", async (req, res) => {
       username: user.username,
       favorite_word: user.favorite_word,
       best_wpm: user.best_wpm,
+      isadmin: user.isadmin,
     });
   } catch (err) {
     console.error(err);
@@ -209,6 +211,69 @@ app.patch('/api/users/:id/best-wpm', async (req, res) => {
     res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET /api/leaderboard?n=10
+// Returns array of { username, best_wpm } ordered highest to lowest wpm
+app.get('/api/leaderboard', async (req, res) => {
+  try {
+    const nParam = req.query.n;
+    const n = nParam ? Number(nParam) : null;
+
+    const baseQs = `SELECT username, COALESCE(best_wpm, 0) AS best_wpm FROM users ORDER BY best_wpm DESC NULLS LAST`;
+
+    let result;
+    if (n && Number.isInteger(n) && n > 0) {
+      result = await query(baseQs + ' LIMIT $1', [n]);
+    } else {
+      result = await query(baseQs);
+    }
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching leaderboard', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET /api/users?adminId=123  (admin only)
+app.get('/api/users', async (req, res) => {
+  try {
+    const adminId = req.query.adminId;
+    if (!adminId) return res.status(400).json({ error: 'adminId required' });
+
+    const check = await query('select isadmin from users where id = $1', [adminId]);
+    if (check.rows.length === 0 || !check.rows[0].isadmin) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+
+    const result = await query('select id, username, first_name, last_name, best_wpm, isadmin from users order by id');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching users', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// DELETE /api/users/:id?adminId=123  (admin only)
+app.delete('/api/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const adminId = req.query.adminId;
+    if (!adminId) return res.status(400).json({ error: 'adminId required' });
+
+    const check = await query('select isadmin from users where id = $1', [adminId]);
+    if (check.rows.length === 0 || !check.rows[0].isadmin) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+
+    const result = await query('delete from users where id = $1 returning id, username', [id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    res.json({ deleted: true, user: result.rows[0] });
+  } catch (err) {
+    console.error('Error deleting user', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
