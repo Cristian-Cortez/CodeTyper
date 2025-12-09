@@ -172,7 +172,7 @@ npm install
 
 make server/.env:
 POSTGRES_USERNAME=postgres.oolvkhaoizxeomhqkdge
-POSTGRES_PASSWORD=Nelly123_Kevi
+POSTGRES_PASSWORD=PASSWORD_HERE
 POSTGRES_HOST=aws-0-us-west-2.pooler.supabase.com
 POSTGRES_PORT=6543
 POSTGRES_DBNAME=postgres
@@ -189,15 +189,15 @@ npm run dev
 ### users table
 
 create table if not exists users (
-  id serial primary key,
-  first_name text not null,
-  last_name text not null,
-  username text unique not null,
-  password_hash text not null,
-  salt text not null,
-  favorite_word text,
-  best_wpm integer,
-  isadmin boolean default false
+id serial primary key,
+first_name text not null,
+last_name text not null,
+username text unique not null,
+password_hash text not null,
+salt text not null,
+favorite_word text,
+best_wpm integer,
+isadmin boolean default false
 );
 
 ### to make a user an admin
@@ -205,4 +205,3 @@ create table if not exists users (
 update users
 set isadmin = true
 where username = 'jake';
-
